@@ -6,7 +6,7 @@ def get_nested_dict_class():
             return self[key]
 
         def __str__(self):
-            string = "NestedDict::"
+            string = "\nNestedDict::{"
 
             for key in self.keys():
 
@@ -17,7 +17,7 @@ def get_nested_dict_class():
                     string = string + "\n\t" + str(key) + ":"
                     string = string + "\t\t" + str(self[key])
 
-            return string
+            return string + "}"
 
     return NestedDict
 
