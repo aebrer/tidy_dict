@@ -65,9 +65,10 @@ class NestedDict(dict):
             return None
 
     def get_from_tuple_iter(self, key, d=None):
-
         # first pass
         if d is None:
+            if not (isinstance(key, list) or isinstance(key, tuple)):
+                key = [key]
             key_list = list(key)
             depth = len(key_list)
             if key_list[0] in self.keys() or "." in self.keys():
