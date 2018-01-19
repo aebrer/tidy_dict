@@ -9,10 +9,11 @@ class NestedDict(dict):
         return self[key]
 
     def __str__(self):
+        """
+        Print nicely-ish.
+        :return:
+        """
         string = "\nNestedDict::{"
-
-
-        # print nicely
         for key in self.keys():
             if type(self[key]) == NestedDict:
                 string = string + "\n\n\t" + str(key) + ":"
@@ -22,9 +23,7 @@ class NestedDict(dict):
                 string = string + "\t\t" + str(self[key])
         return string + "}"
 
-
     def build_from_tuple(self, key, value=list(), end=True):
-
         """
         Build a dictionary from a tuple object directly. Useful if you don't know how long the combinations might be.
         :param key:
@@ -32,7 +31,6 @@ class NestedDict(dict):
         :param end:
         :return:
         """
-
         if isinstance(key, tuple):
             if len(key) >= 2:
                 if key[0] not in self:
@@ -45,7 +43,6 @@ class NestedDict(dict):
             if isinstance(self[key], NestedDict):
                 if end:
                     self[key]["."] = value
-                    print end
                 return self[key]
             else:
                 self[key] = NestedDict()
@@ -53,16 +50,12 @@ class NestedDict(dict):
                     self[key]["."] = value
                 return self[key]
 
-
     def get_from_tuple(self, key):
-
         """
         Given a tuple as a key, get the values at that nested position. Returns None if invalid.
         :param key:
         :return:
         """
-
-
         if key not in self:
             if isinstance(key, tuple):
                 if len(key) >= 2:
@@ -77,13 +70,11 @@ class NestedDict(dict):
             return self[key]["."]
 
     def is_tuple_in(self, key):
-
         """
         True if a given tuple has a value stored in this dictionary.
         :param key:
         :return:
         """
-
         return self.get_from_tuple(key) is not None
 
 
