@@ -59,7 +59,7 @@ class NestedDict(dict):
         try:
             res = None
             while res is None:
-                res = self.get_from_tuple_iter(key).next()
+                res = next(self.get_from_tuple_iter(key))
             return res
         except:
             return None
