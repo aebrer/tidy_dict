@@ -56,25 +56,42 @@ class NestedDict(dict):
         :param key:
         :return:
         """
-        if key not in self:
-            if isinstance(key, tuple):
-                if len(key) >= 2:
-                    root = self.get_from_tuple(key[0])
-                    if isinstance(root, NestedDict):
-                        return root.get_from_tuple(key[1:])
-                    else:
-                        return None
-                if len(key) == 1:
-                    return self.get_from_tuple(key[0])
+        try:
+            res = None
+            while res is None:
+                res = self.get_from_tuple_iter(key).next()
+            return res
+        except:
+            return None
+
+    def get_from_tuple_iter(self, key, d=None):
+
+        # first pass
+        if d is None:
+            key_list = list(key)
+            depth = len(key_list)
+            if key_list[0] in self.keys() or "." in self.keys():
+                if depth == 1:
+                    for i in self.values():
+                        if isinstance(i, NestedDict):
+                            yield i["."]
+                else:
+                    for v in self.values():
+                        if isinstance(v, NestedDict):
+                            for i in self.get_from_tuple_iter(key_list[1:], v):
+                                yield i
         else:
-            return self[key]["."]
+            key_list = list(key)
+            depth = len(key_list)
 
-    def is_tuple_in(self, key):
-        """
-        True if a given tuple has a value stored in this dictionary.
-        :param key:
-        :return:
-        """
-        return self.get_from_tuple(key) is not None
-
-
+            if key_list[0] in d.keys() or "." in d.keys():
+                if depth == 1:
+                    if key_list[0] in d.keys():
+                        for i in d.values():
+                            if isinstance(i, NestedDict):
+                                yield i["."]
+                else:
+                    for v in d.values():
+                        if isinstance(v, NestedDict):
+                            for i in d.get_from_tuple_iter(key_list[1:], v):
+                                yield i
