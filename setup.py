@@ -11,7 +11,7 @@ setuptools.setup(
     description="A tool for easy Nested Dictionaries with option to output tidy CSV files.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/atomoton/nested_dict",
+    url="https://github.com/atomoton/tidy_dict",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
