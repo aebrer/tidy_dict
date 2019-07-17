@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="nested_dict",
+    name="tidy_dict",
     version="1.0.0",
     author="Andrew E Brereton",
     author_email="andrew@brereton.me",
