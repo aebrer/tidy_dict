@@ -1,9 +1,0 @@
-README.md
-setup.py
-src/NestedDict.egg-info/PKG-INFO
-src/NestedDict.egg-info/SOURCES.txt
-src/NestedDict.egg-info/dependency_links.txt
-src/NestedDict.egg-info/not-zip-safe
-src/NestedDict.egg-info/top_level.txt
-src/nested_dict/__init__.py
-src/nested_dict/nested_dict.py

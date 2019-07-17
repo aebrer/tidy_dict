@@ -3,9 +3,9 @@ nested dictionary class, with automatic csv printing
 """
 
 
-class NestedDict(dict):
+class TidyDict(dict):
     def __missing__(self, key):
-        self[key] = NestedDict()
+        self[key] = TidyDict()
         return self[key]
 
     def __str__(self, t=1):
@@ -21,7 +21,7 @@ class NestedDict(dict):
 
         for key in list(self.keys()):
 
-            if type(self[key]) == NestedDict:
+            if type(self[key]) == TidyDict:
                 string = string + "\n\n" + "\t" * t + str(key) + ":"
                 string = string + "\n" + "\t" * t + self[key].__str__(t + 1)
             else:
@@ -41,7 +41,7 @@ class NestedDict(dict):
 
         for key in list(self.keys()):
 
-            if type(self[key]) == NestedDict:
+            if type(self[key]) == TidyDict:
                 string += f"{key} = {self[key].__repr__()},"
             else:
                 string += f"{key} = {self[key]},"
@@ -52,7 +52,7 @@ class NestedDict(dict):
         '''convert to a normal dict'''
         new_dict = {}
         for key, val in self.items():
-            if type(val) == NestedDict:
+            if type(val) == TidyDict:
                 new_dict[key] = val.to_dict()
             else:
                 new_dict[key] = val
@@ -61,7 +61,7 @@ class NestedDict(dict):
     def _flatten_dict(self):
         out = []
         def flatten(x, name=''):
-            if type(x) is NestedDict:
+            if type(x) is TidyDict:
                 for a in x:
                     flatten(x[a], name + a + ',')
             elif type(x) is list:

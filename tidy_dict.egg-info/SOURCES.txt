@@ -1,0 +1,7 @@
+README.md
+setup.py
+tidy_dict/__init__.py
+tidy_dict.egg-info/PKG-INFO
+tidy_dict.egg-info/SOURCES.txt
+tidy_dict.egg-info/dependency_links.txt
+tidy_dict.egg-info/top_level.txt
