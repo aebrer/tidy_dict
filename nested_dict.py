@@ -1,6 +1,7 @@
 """
-nested dictionary class, for easy sparse matrices
+nested dictionary class, with automatic csv printing
 """
+
 
 class NestedDict(dict):
     def __missing__(self, key):
@@ -12,24 +13,24 @@ class NestedDict(dict):
         if len(self.keys()) == 0:
             if t == 1:
                 t = 0
-            return "\t"*(t-1) + "{Empty NestedDict}"
+            return "\t" * (t - 1) + "{Empty NestedDict}"
         elif t == 1:
             string = "NestedDict::{"
         else:
-            string ="\t"*(t-1) + "{"
+            string = "\t" * (t - 1) + "{"
 
         for key in list(self.keys()):
 
             if type(self[key]) == NestedDict:
-                string = string + "\n\n" + "\t"*t + str(key) + ":"
-                string = string + "\n" + "\t"*t + self[key].__str__(t+1)
+                string = string + "\n\n" + "\t" * t + str(key) + ":"
+                string = string + "\n" + "\t" * t + self[key].__str__(t + 1)
             else:
-                string = string + "\n" + "\t"*t + str(key) + ":"
+                string = string + "\n" + "\t" * t + str(key) + ":"
                 string = string + "\t\t" + str(self[key])
 
         if t == 1:
             t = 0
-        return string + "\n" + "\t"*t + "}"
+        return string + "\n" + "\t" * t + "}"
 
     def __repr__(self):
         '''outputs an accurate string representation that you can initialize an exact copy from'''
@@ -56,4 +57,34 @@ class NestedDict(dict):
             else:
                 new_dict[key] = val
         return new_dict
+
+    def _flatten_dict(self):
+        out = []
+        def flatten(x, name=''):
+            if type(x) is NestedDict:
+                for a in x:
+                    flatten(x[a], name + a + ',')
+            elif type(x) is list:
+                i = 0
+                for a in x:
+                    flatten(a, name + str(i) + ',')
+                    i += 1
+            else:
+                out.append(f"{name[:-1]},{x}")
+
+        flatten(self)
+        return out
+
+    def to_csv(self, outname=None):
+        lines = self._flatten_dict()
+        string = ""
+        for line in lines:
+            string += f"{line}\n"
+        string = string.strip()
+        if outname is None:
+            return string
+        else:
+            with open(outname, "w") as outfile:
+                outfile.write(string)
+            return string
 
