@@ -13,9 +13,9 @@ class TidyDict(dict):
         if len(self.keys()) == 0:
             if t == 1:
                 t = 0
-            return "\t" * (t - 1) + "{Empty NestedDict}"
+            return "\t" * (t - 1) + "{Empty TidyDict}"
         elif t == 1:
-            string = "NestedDict::{"
+            string = "TidyDict::{"
         else:
             string = "\t" * (t - 1) + "{"
 
@@ -35,9 +35,9 @@ class TidyDict(dict):
     def __repr__(self):
         '''outputs an accurate string representation that you can initialize an exact copy from'''
         if len(self.keys()) == 0:
-            return "NestedDict()"
+            return "TidyDict()"
         else:
-            string = "NestedDict("
+            string = "TidyDict("
 
         for key in list(self.keys()):
 
