@@ -1,6 +1,7 @@
 """
 nested dictionary class, with automatic csv printing
 """
+import collections
 
 
 class TidyDict(dict):
@@ -31,22 +32,6 @@ class TidyDict(dict):
         if t == 1:
             t = 0
         return string + "\n" + "\t" * t + "}"
-
-    def __repr__(self):
-        '''outputs an accurate string representation that you can initialize an exact copy from'''
-        if len(self.keys()) == 0:
-            return "TidyDict()"
-        else:
-            string = "TidyDict("
-
-        for key in list(self.keys()):
-
-            if type(self[key]) == TidyDict:
-                string += f"{key} = {self[key].__repr__()},"
-            else:
-                string += f"{key} = {self[key]},"
-
-        return f"{string})"
 
     def to_dict(self):
         '''convert to a normal dict'''
@@ -87,4 +72,51 @@ class TidyDict(dict):
             with open(outname, "w") as outfile:
                 outfile.write(string)
             return string
+
+
+def load_csv_to_tidydict(*, csv_in: str, value_type: str = "float"):
+
+    """
+    :param csv_in: a string with the location of a tidy CSV, with no header
+    :param value_type: a string, either "float", "int", or "str"
+    :return: TidyDict
+    """
+    td = TidyDict()
+    td_lines = []
+
+    with open(csv_in, "r") as filein:
+        for line in filein:
+            split_line = line.strip().split(",")
+            n = len(split_line)
+            split_line.reverse()
+            value = None
+            old_td = TidyDict()
+            for i, key in enumerate(split_line):
+                if i == 0:
+                    if value_type == "float":
+                        value = float(key)
+                    elif value_type == "int":
+                        value = int(key)
+                    elif value_type == "str":
+                        value = str(key)
+                elif i == 1:
+                    old_td[key] = value
+                else:
+                    new_td = TidyDict()
+                    new_td[key] = old_td
+                    old_td = new_td
+            td_lines.append(old_td)
+
+    def combine_td(td, td_frag):
+        for k, v in td_frag.items():
+            if (k in td and isinstance(td[k], TidyDict)
+                    and isinstance(td_frag[k], collections.Mapping)):
+                combine_td(td[k], td_frag[k])
+            else:
+                td[k] = td_frag[k]
+
+    for old_td in td_lines:
+        combine_td(td, old_td)
+
+    return td
 
