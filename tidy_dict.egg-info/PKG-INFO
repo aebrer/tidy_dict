@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: tidy-dict
-Version: 1.0.1
+Version: 1.1.1
 Summary: A tool for easy Nested Dictionaries with option to output tidy CSV files.
 Home-page: https://github.com/atomoton/tidy_dict
 Author: Andrew E Brereton
@@ -12,7 +12,11 @@ Description: # TidyDict()
         * Prints in a non-garbage way (tabulated).
         * use `.to_csv()` to get a CSV file
         * use `to_dict()` to get a "normal" dictionary
-        ~~~~
+        
+        # load_csv_to_tidydict()
+        
+        * use this function to create a TidyDict from a csv
+        
 Platform: UNKNOWN
 Classifier: Programming Language :: Python :: 3
 Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)

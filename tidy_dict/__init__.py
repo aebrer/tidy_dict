@@ -66,12 +66,12 @@ class TidyDict(dict):
         for line in lines:
             string += f"{line}\n"
         string = string.strip()
-        if outname is None:
-            return string
-        else:
+        if outname:
+            assert isinstance(outname, str)
             with open(outname, "w") as outfile:
                 outfile.write(string)
-            return string
+            print(f"Saved csv to: {outname}")
+        return string
 
 
 def load_csv_to_tidydict(*, csv_in: str, value_type: str = "float"):
@@ -82,7 +82,14 @@ def load_csv_to_tidydict(*, csv_in: str, value_type: str = "float"):
     :return: TidyDict
     """
     td = TidyDict()
-    td_lines = []
+
+    def combine_td(td, td_frag):
+        for k, v in td_frag.items():
+            if (k in td and isinstance(td[k], TidyDict)
+                    and isinstance(td_frag[k], collections.Mapping)):
+                combine_td(td[k], td_frag[k])
+            else:
+                td[k] = td_frag[k]
 
     with open(csv_in, "r") as filein:
         for line in filein:
@@ -105,18 +112,8 @@ def load_csv_to_tidydict(*, csv_in: str, value_type: str = "float"):
                     new_td = TidyDict()
                     new_td[key] = old_td
                     old_td = new_td
-            td_lines.append(old_td)
 
-    def combine_td(td, td_frag):
-        for k, v in td_frag.items():
-            if (k in td and isinstance(td[k], TidyDict)
-                    and isinstance(td_frag[k], collections.Mapping)):
-                combine_td(td[k], td_frag[k])
-            else:
-                td[k] = td_frag[k]
-
-    for old_td in td_lines:
-        combine_td(td, old_td)
+            combine_td(td, old_td)
 
     return td
 

@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="tidy_dict",
-    version="1.1.0",
+    version="1.1.1",
     author="Andrew E Brereton",
     author_email="andrew@brereton.me",
     description="A tool for easy Nested Dictionaries with option to output tidy CSV files.",
