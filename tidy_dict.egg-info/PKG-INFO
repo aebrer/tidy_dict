@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: tidy-dict
-Version: 1.1.1
+Version: 2.0.0
 Summary: A tool for easy Nested Dictionaries with option to output tidy CSV files.
 Home-page: https://github.com/atomoton/tidy_dict
 Author: Andrew E Brereton

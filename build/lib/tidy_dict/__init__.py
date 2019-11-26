@@ -62,16 +62,17 @@ class TidyDict(dict):
 
     def to_csv(self, outname=None):
         lines = self._flatten_dict()
-        string = ""
-        for line in lines:
-            string += f"{line}\n"
-        string = string.strip()
+        n = len(lines)
         if outname:
             assert isinstance(outname, str)
             with open(outname, "w") as outfile:
-                outfile.write(string)
+                for i, line in enumerate(lines):
+                    if i < n-1:
+                        outfile.write(f"{line}\n")
+                    else:
+                        outfile.write(line)
             print(f"Saved csv to: {outname}")
-        return string
+        return lines
 
 
 def load_csv_to_tidydict(*, csv_in: str, value_type: str = "float"):
